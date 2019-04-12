@@ -4,8 +4,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Camera;
 import android.hardware.camera2.CameraManager;
+import android.media.MediaRecorder;
 import android.os.Environment;
 import android.util.Log;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 
 import java.io.FileNotFoundException;
@@ -28,6 +30,7 @@ public class CameraPreview implements SurfaceHolder.Callback, android.hardware.C
     private String NowPictureFileName;
     private Boolean TakePicture = false;
     android.hardware.Camera.Parameters parameters;
+    //private MediaRecorder mMediaRecorder;
 
     public CameraPreview(int PreviewlayoutWidth, int PreviewlayoutHeight)
     {
@@ -68,7 +71,7 @@ public class CameraPreview implements SurfaceHolder.Callback, android.hardware.C
             parameters.setFocusMode("auto");
 
         mCamera.setParameters(parameters);
-        mCamera.startFaceDetection();
+        //mCamera.startFaceDetection();
         mCamera.startSmoothZoom(2);
 
         mCamera.startPreview();
@@ -110,6 +113,36 @@ public class CameraPreview implements SurfaceHolder.Callback, android.hardware.C
         NowPictureFileName = FileName;
         mCamera.autoFocus(myAutoFocusCallback);
     }
+/*
+    public void initRecorder(Surface surface, String FileName) throws IOException {
+        // It is very important to unlock the camera before doing setCamera
+        // or it will results in a black preview
+        if(mCamera == null) {
+            mCamera = android.hardware.Camera.open();
+            mCamera.unlock();
+        }
+
+        if(mMediaRecorder == null)  mMediaRecorder = new MediaRecorder();
+        mMediaRecorder.setPreviewDisplay(surface);
+        mMediaRecorder.setCamera(mCamera);
+
+        mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.DEFAULT);
+        //       mMediaRecorder.setOutputFormat(8);
+        mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
+        mMediaRecorder.setVideoEncodingBitRate(512 * 1000);
+        mMediaRecorder.setVideoFrameRate(30);
+        mMediaRecorder.setVideoSize(640, 480);
+        mMediaRecorder.setOutputFile(FileName);
+
+        try {
+            mMediaRecorder.prepare();
+        } catch (IllegalStateException e) {
+            // This is thrown if the previous calls are not called with the
+            // proper order
+            e.printStackTrace();
+        }
+    }*/
 
     // Set auto-focus interface
     public void CameraStartAutoFocus()

@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.PersistableBundle;
+import android.provider.MediaStore;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity  {
     public static File path;
     public static String[] fileNames = new String[count+1];
     ImageButton on,off;
+    static final int REQUEST_VIDEO_CAPTURE = 1;
 
 
     @Override
@@ -123,6 +125,13 @@ public class MainActivity extends AppCompatActivity  {
 
     public void capture (View v) {
         TakePicture.run();
+    }
+
+    public void record (View v) {
+        Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
+        }
     }
 
     public void setFlash (View v) {
